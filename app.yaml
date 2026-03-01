@@ -74,13 +74,10 @@ services:
     repo: adamcamp/hmis-warehouse
     branch: develop
     deploy_on_push: true
-  build_command: bundle install --without development test && bundle exec rake assets:precompile
+  dockerfile_path: Dockerfile
   envs:
   - key: RAILS_ENV
     value: production
-  - key: EXECJS_RUNTIME
-    scope: BUILD_TIME
-    value: MiniRacer
   - key: RAILS_MASTER_KEY
     scope: RUN_AND_BUILD_TIME
     value: ${WAREHOUSE_RAILS_MASTER_KEY}
