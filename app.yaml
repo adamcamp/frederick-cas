@@ -55,7 +55,6 @@ services:
     repo: adamcamp/hmis-frontend
     branch: develop
     deploy_on_push: true
-  source_dir: /
   dockerfile_path: Dockerfile
   envs:
   - key: VITE_APP_URL
