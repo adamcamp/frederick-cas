@@ -2,7 +2,7 @@ name: frederick-cas
 services:
 - name: api
   github:
-    repo: <YOUR_GITHUB_ORG>/boston-cas
+    repo: adamcamp/boston-cas
     branch: main
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
@@ -51,7 +51,7 @@ services:
 
 - name: warehouse
   github:
-    repo: <YOUR_GITHUB_ORG>/hmis-warehouse
+    repo: adamcamp/hmis-warehouse
     branch: main
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
@@ -177,7 +177,7 @@ services:
 
 - name: web
   github:
-    repo: <YOUR_GITHUB_ORG>/hmis-frontend
+    repo: adamcamp/hmis-frontend
     branch: main
     deploy_on_push: true
   build_command: yarn install && yarn build
