@@ -40,7 +40,20 @@ read -rp "Press Enter when you have saved both keys..."
 echo ""
 
 # Collect credentials
-echo "You will be prompted for 2 values. Input is hidden."
+read -rp "GitHub org/username (default: adamcamp): " GITHUB_ORG
+GITHUB_ORG="${GITHUB_ORG:-adamcamp}"
+
+read -rp "CAS domain (default: frederick-cas.ondigitalocean.app): " CAS_DOMAIN
+CAS_DOMAIN="${CAS_DOMAIN:-frederick-cas.ondigitalocean.app}"
+
+read -rp "Warehouse domain (default: frederick-warehouse.ondigitalocean.app): " WAREHOUSE_DOMAIN
+WAREHOUSE_DOMAIN="${WAREHOUSE_DOMAIN:-frederick-warehouse.ondigitalocean.app}"
+
+read -rp "Email domain for no-reply address (default: frederick-cas.org): " EMAIL_DOMAIN
+EMAIL_DOMAIN="${EMAIL_DOMAIN:-frederick-cas.org}"
+echo ""
+
+echo "The following inputs are hidden."
 echo ""
 
 read -rsp "DigitalOcean API Token: " DO_TOKEN
@@ -60,6 +73,10 @@ TEMP_SPEC=$(mktemp /tmp/frederick-cas-spec-XXXXXX.yaml)
 trap "rm -f $TEMP_SPEC" EXIT
 
 sed \
+  -e "s|__GITHUB_ORG__|${GITHUB_ORG}|g" \
+  -e "s|__CAS_DOMAIN__|${CAS_DOMAIN}|g" \
+  -e "s|__WAREHOUSE_DOMAIN__|${WAREHOUSE_DOMAIN}|g" \
+  -e "s|__EMAIL_DOMAIN__|${EMAIL_DOMAIN}|g" \
   -e "s|\${RAILS_MASTER_KEY}|${CAS_MASTER_KEY}|g" \
   -e "s|\${WAREHOUSE_RAILS_MASTER_KEY}|${WAREHOUSE_MASTER_KEY}|g" \
   -e "s|\${SENDGRID_API_KEY}|${SENDGRID_KEY}|g" \
@@ -75,8 +92,8 @@ echo "App ID:  $APP_ID"
 echo "Console: https://cloud.digitalocean.com/apps/${APP_ID}"
 echo ""
 echo "Once deployed (10-15 minutes), your services will be at:"
-echo "  CAS:       https://frederick-cas.ondigitalocean.app"
-echo "  Warehouse: https://frederick-warehouse.ondigitalocean.app"
+echo "  CAS:       https://${CAS_DOMAIN}"
+echo "  Warehouse: https://${WAREHOUSE_DOMAIN}"
 echo ""
 echo -e "${YELLOW}Watch build progress:${NC}"
 echo "  doctl apps logs $APP_ID --follow"

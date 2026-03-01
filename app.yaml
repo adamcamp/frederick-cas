@@ -2,7 +2,7 @@ name: frederick-cas
 services:
 - name: api
   github:
-    repo: adamcamp/boston-cas
+    repo: __GITHUB_ORG__/frederick-cas
     branch: main
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
@@ -19,19 +19,19 @@ services:
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
-    value: frederick-cas.ondigitalocean.app
+    value: __CAS_DOMAIN__
   - key: FQDN
-    value: frederick-cas.ondigitalocean.app
+    value: __CAS_DOMAIN__
   - key: CLIENT
     value: Frederick CAS
   - key: TIMEZONE
     value: America/New_York
   - key: DEFAULT_FROM
-    value: '"No Reply" <no-reply@frederick-cas.org>'
+    value: '"No Reply" <no-reply@__EMAIL_DOMAIN__>'
   - key: SMTP_SERVER
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
-    value: frederick-cas.ondigitalocean.app
+    value: __CAS_DOMAIN__
   - key: SMTP_PORT
     value: "587"
   - key: SENDGRID_API_KEY
@@ -51,7 +51,7 @@ services:
 
 - name: warehouse
   github:
-    repo: adamcamp/hmis-warehouse
+    repo: __GITHUB_ORG__/hmis-warehouse
     branch: main
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
@@ -145,19 +145,19 @@ services:
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
-    value: frederick-warehouse.ondigitalocean.app
+    value: __WAREHOUSE_DOMAIN__
   - key: FQDN
-    value: frederick-warehouse.ondigitalocean.app
+    value: __WAREHOUSE_DOMAIN__
   - key: CLIENT
     value: Frederick HMIS Warehouse
   - key: TIMEZONE
     value: America/New_York
   - key: DEFAULT_FROM
-    value: '"No Reply" <noreply@frederick-cas.org>'
+    value: '"No Reply" <noreply@__EMAIL_DOMAIN__>'
   - key: SMTP_SERVER
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
-    value: frederick-warehouse.ondigitalocean.app
+    value: __WAREHOUSE_DOMAIN__
   - key: SMTP_PORT
     value: "587"
   - key: SENDGRID_API_KEY
@@ -177,15 +177,15 @@ services:
 
 - name: web
   github:
-    repo: adamcamp/hmis-frontend
+    repo: __GITHUB_ORG__/hmis-frontend
     branch: main
     deploy_on_push: true
   build_command: yarn install && yarn build
   envs:
   - key: VITE_API_URL
-    value: https://frederick-cas.ondigitalocean.app/graphql
+    value: https://__CAS_DOMAIN__/graphql
   - key: VITE_WAREHOUSE_URL
-    value: https://frederick-warehouse.ondigitalocean.app
+    value: https://__WAREHOUSE_DOMAIN__
   source_dir: dist
   http_port: 8080
   health_check:
