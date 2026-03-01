@@ -189,7 +189,6 @@ static_sites:
     branch: develop
     deploy_on_push: true
   build_command: yarn install && yarn build
-  output_dir: dist
   envs:
   - key: VITE_API_URL
     value: https://${CAS_DOMAIN}/graphql
