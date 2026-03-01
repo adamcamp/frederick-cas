@@ -69,7 +69,7 @@ doctl auth init --access-token "$DO_TOKEN"
 # Build a temp spec with all placeholders filled in.
 # Note: ${db.*} and ${cache.*} references are left intact — DigitalOcean
 # resolves those automatically from the managed database/cache bindings.
-TEMP_SPEC=$(mktemp /tmp/frederick-cas-spec-XXXXXX.yaml)
+TEMP_SPEC=$(mktemp "$HOME/.frederick-cas-spec-XXXXXX.yaml")
 trap "rm -f $TEMP_SPEC" EXIT
 
 sed \
