@@ -3,7 +3,7 @@ services:
 - name: api
   github:
     repo: adamcamp/frederick-cas
-    branch: main
+    branch: develop
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
   envs:
@@ -52,7 +52,7 @@ services:
 - name: warehouse
   github:
     repo: adamcamp/hmis-warehouse
-    branch: main
+    branch: develop
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
   envs:
@@ -178,7 +178,7 @@ services:
 - name: web
   github:
     repo: adamcamp/hmis-frontend
-    branch: main
+    branch: develop
     deploy_on_push: true
   build_command: yarn install && yarn build
   envs:
