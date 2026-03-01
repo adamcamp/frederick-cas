@@ -12,7 +12,7 @@ ENV['RAILS_DISABLE_DEPRECATED_TO_S_CONVERSION'] = 'true'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module BostonCa
+module FrederickCa
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1

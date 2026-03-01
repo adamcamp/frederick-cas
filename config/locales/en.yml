@@ -30,6 +30,7 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  app_name: 'Frederick Coordinated Access System'
   associated_contacts:
     new:
      search_prompt: 'Search contacts...'

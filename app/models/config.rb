@@ -36,7 +36,7 @@ class Config < ApplicationRecord
       1
     end
 
-    self.warehouse_url = 'https://hmis.boston.gov'
+    self.warehouse_url = 'https://hmis.frederick-md.gov'
   end
 
   def self.invalidate_cache

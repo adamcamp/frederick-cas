@@ -1,0 +1,217 @@
+name: frederick-cas
+services:
+- name: api
+  github:
+    repo: <YOUR_GITHUB_ORG>/boston-cas
+    branch: main
+    deploy_on_push: true
+  build_command: bundle install --without development test && bundle exec rake assets:precompile
+  envs:
+  - key: RAILS_ENV
+    value: production
+  - key: RAILS_MASTER_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${RAILS_MASTER_KEY}
+  - key: DATABASE_URL
+    scope: RUN_TIME
+    value: ${db.username}:${db.password}@${db.host}:${db.port}/frederick_cas_production
+  - key: REDIS_URL
+    scope: RUN_TIME
+    value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
+  - key: HOSTNAME
+    value: frederick-cas.ondigitalocean.app
+  - key: FQDN
+    value: frederick-cas.ondigitalocean.app
+  - key: CLIENT
+    value: Frederick CAS
+  - key: TIMEZONE
+    value: America/New_York
+  - key: DEFAULT_FROM
+    value: '"No Reply" <no-reply@frederick-cas.org>'
+  - key: SMTP_SERVER
+    value: smtp.sendgrid.net
+  - key: SMTP_DOMAIN
+    value: frederick-cas.ondigitalocean.app
+  - key: SMTP_PORT
+    value: "587"
+  - key: SENDGRID_API_KEY
+    scope: RUN_TIME
+    value: ${SENDGRID_API_KEY}
+  http_port: 3000
+  internal_ports:
+  - 3000
+  health_check:
+    http_path: /health
+  http_routes:
+  - path: /
+    preserve_path_prefix: true
+  run_command: |
+    bundle exec rake db:migrate
+    exec bundle exec puma -c config/puma.rb
+
+- name: warehouse
+  github:
+    repo: <YOUR_GITHUB_ORG>/hmis-warehouse
+    branch: main
+    deploy_on_push: true
+  build_command: bundle install --without development test && bundle exec rake assets:precompile
+  envs:
+  - key: RAILS_ENV
+    value: production
+  - key: RAILS_MASTER_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${WAREHOUSE_RAILS_MASTER_KEY}
+  - key: DATABASE_ADAPTER
+    value: postgresql
+  - key: DATABASE_APP_DB
+    value: frederick_warehouse_production
+  - key: DATABASE_HOST
+    scope: RUN_TIME
+    value: ${db.host}
+  - key: DATABASE_PORT
+    scope: RUN_TIME
+    value: ${db.port}
+  - key: DATABASE_USER
+    scope: RUN_TIME
+    value: ${db.username}
+  - key: DATABASE_PASS
+    scope: RUN_TIME
+    value: ${db.password}
+  - key: WAREHOUSE_DATABASE_ADAPTER
+    value: postgis
+  - key: WAREHOUSE_DATABASE_DB
+    value: frederick_warehouse_data_production
+  - key: WAREHOUSE_DATABASE_HOST
+    scope: RUN_TIME
+    value: ${db.host}
+  - key: WAREHOUSE_DATABASE_PORT
+    scope: RUN_TIME
+    value: ${db.port}
+  - key: WAREHOUSE_DATABASE_USER
+    scope: RUN_TIME
+    value: ${db.username}
+  - key: WAREHOUSE_DATABASE_PASS
+    scope: RUN_TIME
+    value: ${db.password}
+  - key: HEALTH_DATABASE_ADAPTER
+    value: postgresql
+  - key: HEALTH_DATABASE_DB
+    value: frederick_health_production
+  - key: HEALTH_DATABASE_HOST
+    scope: RUN_TIME
+    value: ${db.host}
+  - key: HEALTH_DATABASE_PORT
+    scope: RUN_TIME
+    value: ${db.port}
+  - key: HEALTH_DATABASE_USER
+    scope: RUN_TIME
+    value: ${db.username}
+  - key: HEALTH_DATABASE_PASS
+    scope: RUN_TIME
+    value: ${db.password}
+  - key: REPORTING_DATABASE_ADAPTER
+    value: postgresql
+  - key: REPORTING_DATABASE_DB
+    value: frederick_reporting_production
+  - key: REPORTING_DATABASE_HOST
+    scope: RUN_TIME
+    value: ${db.host}
+  - key: REPORTING_DATABASE_PORT
+    scope: RUN_TIME
+    value: ${db.port}
+  - key: REPORTING_DATABASE_USER
+    scope: RUN_TIME
+    value: ${db.username}
+  - key: REPORTING_DATABASE_PASS
+    scope: RUN_TIME
+    value: ${db.password}
+  - key: CAS_DATABASE_ADAPTER
+    value: postgresql
+  - key: CAS_DATABASE_DB
+    value: frederick_cas_production
+  - key: CAS_DATABASE_HOST
+    scope: RUN_TIME
+    value: ${db.host}
+  - key: CAS_DATABASE_PORT
+    scope: RUN_TIME
+    value: ${db.port}
+  - key: CAS_DATABASE_USER
+    scope: RUN_TIME
+    value: ${db.username}
+  - key: CAS_DATABASE_PASS
+    scope: RUN_TIME
+    value: ${db.password}
+  - key: REDIS_URL
+    scope: RUN_TIME
+    value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
+  - key: HOSTNAME
+    value: frederick-warehouse.ondigitalocean.app
+  - key: FQDN
+    value: frederick-warehouse.ondigitalocean.app
+  - key: CLIENT
+    value: Frederick HMIS Warehouse
+  - key: TIMEZONE
+    value: America/New_York
+  - key: DEFAULT_FROM
+    value: '"No Reply" <noreply@frederick-cas.org>'
+  - key: SMTP_SERVER
+    value: smtp.sendgrid.net
+  - key: SMTP_DOMAIN
+    value: frederick-warehouse.ondigitalocean.app
+  - key: SMTP_PORT
+    value: "587"
+  - key: SENDGRID_API_KEY
+    scope: RUN_TIME
+    value: ${SENDGRID_API_KEY}
+  http_port: 3000
+  internal_ports:
+  - 3000
+  health_check:
+    http_path: /health
+  http_routes:
+  - path: /warehouse
+    preserve_path_prefix: true
+  run_command: |
+    bundle exec rake db:migrate
+    exec bundle exec puma -c config/puma.rb
+
+- name: web
+  github:
+    repo: <YOUR_GITHUB_ORG>/hmis-frontend
+    branch: main
+    deploy_on_push: true
+  build_command: yarn install && yarn build
+  envs:
+  - key: VITE_API_URL
+    value: https://frederick-cas.ondigitalocean.app/graphql
+  - key: VITE_WAREHOUSE_URL
+    value: https://frederick-warehouse.ondigitalocean.app
+  source_dir: dist
+  http_port: 8080
+  health_check:
+    http_path: /
+  http_routes:
+  - path: /
+    preserve_path_prefix: true
+
+databases:
+- name: db
+  engine: PG
+  version: "14"
+  production: true
+  
+- name: cache
+  engine: REDIS
+  version: "7"
+  production: true
+
+static_sites:
+- name: assets
+  source_dir: public
+  
+envs:
+# Shared environment variables
+- key: RAILS_LOG_TO_STDOUT
+  value: "true"
+- key: MAIL_DELIVERY_METHOD
+  value: smtp
