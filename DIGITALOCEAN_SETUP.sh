@@ -15,9 +15,11 @@ echo ""
 
 # Check prerequisites
 if ! command -v doctl &> /dev/null; then
-  echo -e "${RED}Error: doctl is not installed.${NC}"
-  echo "Install it from: https://docs.digitalocean.com/reference/doctl/how-to/install/"
-  exit 1
+  echo "Installing doctl via snap..."
+  sudo snap install doctl
+  echo -e "${GREEN}doctl installed ✓${NC}"
+else
+  echo -e "${GREEN}doctl already installed ✓${NC}"
 fi
 
 if [[ ! -f "$SCRIPT_DIR/app.yaml" ]]; then

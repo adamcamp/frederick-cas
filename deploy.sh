@@ -6,7 +6,7 @@
 #   DO_TOKEN=xxx ./deploy.sh           # skip token prompt
 #   DO_TOKEN=xxx APP_NAME=xxx ./deploy.sh  # skip both prompts
 #
-# Requires: curl, jq
+# Requires: doctl
 
 set -euo pipefail
 
@@ -16,18 +16,11 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-DO_API="https://api.digitalocean.com/v2"
-
 # ---- Prerequisites ----
-if ! command -v curl &>/dev/null; then
-  echo -e "${RED}Error: curl is required but not installed.${NC}" >&2
-  exit 1
-fi
-if ! command -v jq &>/dev/null; then
-  echo -e "${RED}Error: jq is required but not installed.${NC}" >&2
-  echo "  macOS:  brew install jq"
-  echo "  Ubuntu: apt-get install jq"
-  exit 1
+if ! command -v doctl &>/dev/null; then
+  echo "Installing doctl via snap..."
+  sudo snap install doctl
+  echo -e "${GREEN}doctl installed ✓${NC}"
 fi
 
 echo -e "${CYAN}Frederick CAS — DigitalOcean Deploy${NC}"
@@ -44,29 +37,15 @@ if [[ -z "$DO_TOKEN" ]]; then
   exit 1
 fi
 
-do_get() {
-  curl -sf -H "Authorization: Bearer $DO_TOKEN" "$DO_API/$1"
-}
-
-do_post() {
-  local path="$1"
-  shift
-  curl -sf -X POST \
-    -H "Authorization: Bearer $DO_TOKEN" \
-    -H "Content-Type: application/json" \
-    "$DO_API/$path" \
-    "$@"
-}
+echo -e "${YELLOW}Authenticating with DigitalOcean...${NC}"
+doctl auth init --access-token "$DO_TOKEN"
 
 # ---- Find the app ----
 echo -e "${YELLOW}Fetching app list...${NC}"
-APPS_JSON=$(do_get "apps" 2>/dev/null) || {
+APP_NAMES=$(doctl apps list --format Spec.Name --no-header 2>/dev/null) || {
   echo -e "${RED}Error: Could not reach DigitalOcean API. Check your token.${NC}" >&2
   exit 1
 }
-
-# Build a display list of apps
-APP_NAMES=$(echo "$APPS_JSON" | jq -r '.apps[].spec.name')
 
 if [[ -z "${APP_NAME:-}" ]]; then
   echo ""
@@ -77,8 +56,7 @@ if [[ -z "${APP_NAME:-}" ]]; then
   APP_NAME="${APP_NAME:-frederick-cas}"
 fi
 
-APP_ID=$(echo "$APPS_JSON" | jq -r --arg name "$APP_NAME" \
-  '.apps[] | select(.spec.name == $name) | .id')
+APP_ID=$(doctl apps list --format Spec.Name,ID --no-header 2>/dev/null | awk -v name="$APP_NAME" '$1 == name {print $2}')
 
 if [[ -z "$APP_ID" ]]; then
   echo -e "${RED}Error: App '${APP_NAME}' not found.${NC}" >&2
@@ -93,12 +71,11 @@ echo -e "App: ${GREEN}${APP_NAME}${NC}  (ID: ${APP_ID})"
 echo ""
 echo -e "${YELLOW}Triggering deployment...${NC}"
 
-DEPLOY_JSON=$(do_post "apps/${APP_ID}/deployments" -d '{"force_build": true}') || {
+DEPLOY_ID=$(doctl apps create-deployment "$APP_ID" --force-rebuild --format ID --no-header) || {
   echo -e "${RED}Error: Failed to trigger deployment.${NC}" >&2
   exit 1
 }
 
-DEPLOY_ID=$(echo "$DEPLOY_JSON" | jq -r '.deployment.id')
 DEPLOY_URL="https://cloud.digitalocean.com/apps/${APP_ID}/deployments/${DEPLOY_ID}"
 
 echo ""
@@ -115,17 +92,9 @@ SPIN=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
 SPIN_IDX=0
 
 while true; do
-  STATUS_JSON=$(do_get "apps/${APP_ID}/deployments/${DEPLOY_ID}" 2>/dev/null) || break
-  PHASE=$(echo "$STATUS_JSON" | jq -r '.deployment.phase')
-  PROGRESS=$(echo "$STATUS_JSON" | jq -r '
-    .deployment.progress |
-    if . then
-      "\(.success_steps // 0)/\(.total_steps // "?") steps"
-    else "—"
-    end
-  ')
+  PHASE=$(doctl apps get-deployment "$APP_ID" "$DEPLOY_ID" --format Phase --no-header 2>/dev/null) || break
 
-  printf "\r  ${SPIN[$SPIN_IDX]} Phase: %-20s  Progress: %-15s" "$PHASE" "$PROGRESS"
+  printf "\r  ${SPIN[$SPIN_IDX]} Phase: %-20s" "$PHASE"
   SPIN_IDX=$(( (SPIN_IDX + 1) % ${#SPIN[@]} ))
 
   case "$PHASE" in

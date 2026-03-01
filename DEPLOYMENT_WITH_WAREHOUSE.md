@@ -15,27 +15,55 @@
 
 ## Before You Start
 
-You need two things:
+You need:
 
-1. **A DigitalOcean account** — https://digitalocean.com
+1. **A DigitalOcean account** with an API token — https://cloud.digitalocean.com/account/api/tokens
 2. **A SendGrid API key** — sign up at https://sendgrid.com, then go to **Settings → API Keys → Create API Key** (Full Access). Copy the key — you'll only see it once.
 
-## Deploy
+## Which Script to Run
 
-Click the button in [README.md](README.md). DigitalOcean will walk you through a wizard. Fill in these values:
+| Situation | Script |
+|-----------|--------|
+| First time — creating the app on DigitalOcean | `./DIGITALOCEAN_SETUP.sh` |
+| Triggering a new deployment on an existing app | `./deploy.sh` |
 
-| Variable | What to enter |
-|----------|---------------|
-| `CAS_DOMAIN` | Leave as `frederick-cas.ondigitalocean.app` unless you have a custom domain |
-| `WAREHOUSE_DOMAIN` | Leave as `frederick-warehouse.ondigitalocean.app` unless you have a custom domain |
-| `EMAIL_DOMAIN` | Domain for outgoing no-reply emails (e.g. `frederick-cas.org`) |
-| `RAILS_MASTER_KEY` | Run `openssl rand -hex 16` in a terminal and paste the result |
-| `WAREHOUSE_RAILS_MASTER_KEY` | Run `openssl rand -hex 16` again — use a **different** value |
-| `SENDGRID_API_KEY` | Your SendGrid API key |
+## First-Time Setup
 
-**Save both master keys somewhere safe before clicking Create.** You cannot retrieve them later.
+Run `DIGITALOCEAN_SETUP.sh` from the `frederick-cas` directory:
 
-Deployment takes 10-15 minutes. Watch progress at https://cloud.digitalocean.com/apps.
+```bash
+./DIGITALOCEAN_SETUP.sh
+```
+
+The script will:
+
+1. Install `doctl` (DigitalOcean CLI) via snap if not already installed
+2. Generate two Rails master keys and display them — **save both before continuing, you will not see them again**
+3. Prompt for your domains (press Enter to accept the defaults)
+4. Prompt for your DigitalOcean API token and SendGrid API key (input is hidden)
+5. Authenticate with DigitalOcean and create the app from `app.yaml`
+
+Once complete, initial deployment takes 10–15 minutes. Watch progress with:
+
+```bash
+doctl apps logs <APP_ID> --follow
+```
+
+## Triggering a Deployment
+
+Run `deploy.sh` any time you want to redeploy:
+
+```bash
+./deploy.sh
+```
+
+Or pass credentials via environment variables to skip prompts:
+
+```bash
+DO_TOKEN=xxx APP_NAME=frederick-cas ./deploy.sh
+```
+
+The script will authenticate, list your apps, trigger a forced rebuild, and poll until the deployment completes.
 
 ## After Deployment
 
@@ -51,10 +79,6 @@ Deployment takes 10-15 minutes. Watch progress at https://cloud.digitalocean.com
 3. Check your inbox
 
 If email doesn't arrive, check https://app.sendgrid.com/email_activity for bounces.
-
-## Updating
-
-Push to `main` and DigitalOcean rebuilds automatically within 2-5 minutes.
 
 ## Troubleshooting
 
