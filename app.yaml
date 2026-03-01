@@ -5,7 +5,7 @@ services:
     repo: adamcamp/frederick-cas
     branch: develop
     deploy_on_push: true
-  build_command: bundle install && bundle exec rake assets:precompile
+  build_command: bundle install && yarn install --production &&  bundle exec rake assets:precompile
   envs:
   - key: RAILS_ENV
     value: production
