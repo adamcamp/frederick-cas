@@ -12,6 +12,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo -e "${GREEN}Frederick CAS — DigitalOcean Deployment Setup${NC}"
 echo "================================================"
 echo ""
+echo -e "${YELLOW}Before running this script, ensure your GitHub account is connected${NC}"
+echo -e "${YELLOW}to DigitalOcean at: https://cloud.digitalocean.com/account/integrations${NC}"
+echo ""
 
 # Check prerequisites
 if ! command -v doctl &> /dev/null; then
@@ -50,7 +53,6 @@ WAREHOUSE_DOMAIN="${WAREHOUSE_DOMAIN:-frederick-warehouse.ondigitalocean.app}"
 
 read -rp "Email domain for no-reply address (default: frederick-cas.org): " EMAIL_DOMAIN
 EMAIL_DOMAIN="${EMAIL_DOMAIN:-frederick-cas.org}"
-echo ""
 
 # Collect secrets (hidden)
 echo "The following inputs are hidden."
@@ -66,6 +68,24 @@ echo ""
 echo -e "${YELLOW}Authenticating with DigitalOcean...${NC}"
 doctl auth init --access-token "$DO_TOKEN"
 
+# Create managed Valkey cluster if it doesn't already exist
+CACHE_CLUSTER_NAME="frederick-cas-cache"
+echo ""
+echo -e "${YELLOW}Setting up Valkey cluster...${NC}"
+EXISTING_CACHE=$(doctl databases list --format Name --no-header 2>/dev/null | grep "^${CACHE_CLUSTER_NAME}$" || true)
+if [[ -z "$EXISTING_CACHE" ]]; then
+  echo "Creating managed Valkey cluster '${CACHE_CLUSTER_NAME}'..."
+  doctl databases create "$CACHE_CLUSTER_NAME" \
+    --engine valkey \
+    --version 8 \
+    --region nyc3 \
+    --size db-s-1vcpu-1gb \
+    --num-nodes 1
+  echo -e "${GREEN}Valkey cluster created ✓${NC}"
+else
+  echo -e "${GREEN}Valkey cluster '${CACHE_CLUSTER_NAME}' already exists ✓${NC}"
+fi
+
 # Build a temp spec with all placeholders filled in.
 # Note: ${db.*} and ${cache.*} references are left intact — DigitalOcean
 # resolves those automatically from the managed database/cache bindings.
@@ -79,6 +99,7 @@ sed \
   -e "s|\${RAILS_MASTER_KEY}|${CAS_MASTER_KEY}|g" \
   -e "s|\${WAREHOUSE_RAILS_MASTER_KEY}|${WAREHOUSE_MASTER_KEY}|g" \
   -e "s|\${SENDGRID_API_KEY}|${SENDGRID_KEY}|g" \
+  -e "s|\${CACHE_CLUSTER_NAME}|${CACHE_CLUSTER_NAME}|g" \
   "$SCRIPT_DIR/app.yaml" > "$TEMP_SPEC"
 
 echo -e "${YELLOW}Creating DigitalOcean App from app.yaml...${NC}"

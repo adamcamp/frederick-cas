@@ -38,11 +38,9 @@ services:
     scope: RUN_TIME
     value: ${SENDGRID_API_KEY}
   http_port: 3000
-  internal_ports:
-  - 3000
   health_check:
     http_path: /health
-  http_routes:
+  routes:
   - path: /
     preserve_path_prefix: true
   run_command: |
@@ -164,51 +162,43 @@ services:
     scope: RUN_TIME
     value: ${SENDGRID_API_KEY}
   http_port: 3000
-  internal_ports:
-  - 3000
   health_check:
     http_path: /health
-  http_routes:
+  routes:
   - path: /warehouse
     preserve_path_prefix: true
   run_command: |
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
 
+databases:
+- name: db
+  engine: PG
+  version: "14"
+
+- name: cache
+  engine: VALKEY
+  version: "8"
+  production: true
+  cluster_name: ${CACHE_CLUSTER_NAME}
+
+static_sites:
 - name: web
   github:
     repo: adamcamp/hmis-frontend
     branch: develop
     deploy_on_push: true
   build_command: yarn install && yarn build
+  output_dir: dist
   envs:
   - key: VITE_API_URL
     value: https://${CAS_DOMAIN}/graphql
   - key: VITE_WAREHOUSE_URL
     value: https://${WAREHOUSE_DOMAIN}
-  source_dir: dist
-  http_port: 8080
-  health_check:
-    http_path: /
-  http_routes:
+  routes:
   - path: /
     preserve_path_prefix: true
 
-databases:
-- name: db
-  engine: PG
-  version: "14"
-  production: true
-  
-- name: cache
-  engine: REDIS
-  version: "7"
-  production: true
-
-static_sites:
-- name: assets
-  source_dir: public
-  
 envs:
 # Shared environment variables
 - key: RAILS_LOG_TO_STDOUT
