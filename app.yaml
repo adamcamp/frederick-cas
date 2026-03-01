@@ -9,6 +9,9 @@ services:
   envs:
   - key: RAILS_ENV
     value: production
+  - key: EXECJS_RUNTIME
+    scope: BUILD_TIME
+    value: MiniRacer
   - key: RAILS_MASTER_KEY
     scope: RUN_AND_BUILD_TIME
     value: ${RAILS_MASTER_KEY}
@@ -75,6 +78,9 @@ services:
   envs:
   - key: RAILS_ENV
     value: production
+  - key: EXECJS_RUNTIME
+    scope: BUILD_TIME
+    value: MiniRacer
   - key: RAILS_MASTER_KEY
     scope: RUN_AND_BUILD_TIME
     value: ${WAREHOUSE_RAILS_MASTER_KEY}
