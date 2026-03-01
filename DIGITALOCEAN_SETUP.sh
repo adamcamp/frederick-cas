@@ -51,6 +51,9 @@ CAS_DOMAIN="${CAS_DOMAIN:-frederick-cas.ondigitalocean.app}"
 read -rp "Warehouse domain (default: frederick-warehouse.ondigitalocean.app): " WAREHOUSE_DOMAIN
 WAREHOUSE_DOMAIN="${WAREHOUSE_DOMAIN:-frederick-warehouse.ondigitalocean.app}"
 
+read -rp "Frontend domain (default: frederick-hmis.ondigitalocean.app): " FRONTEND_DOMAIN
+FRONTEND_DOMAIN="${FRONTEND_DOMAIN:-frederick-hmis.ondigitalocean.app}"
+
 read -rp "Email domain for no-reply address (default: frederick-cas.org): " EMAIL_DOMAIN
 EMAIL_DOMAIN="${EMAIL_DOMAIN:-frederick-cas.org}"
 
@@ -120,6 +123,7 @@ sed \
   -e "s|\${SPACES_PUBLIC_BUCKET}|${SPACES_PUBLIC_BUCKET}|g" \
   -e "s|\${SPACES_ACCESS_KEY_ID}|${SPACES_ACCESS_KEY_ID}|g" \
   -e "s|\${SPACES_SECRET_ACCESS_KEY}|${SPACES_SECRET_ACCESS_KEY}|g" \
+  -e "s|\${FRONTEND_DOMAIN}|${FRONTEND_DOMAIN}|g" \
   "$SCRIPT_DIR/app.yaml" > "$TEMP_SPEC"
 
 APP_NAME="frederick-cas"
@@ -144,6 +148,7 @@ echo ""
 echo "Once deployed (10-15 minutes), your services will be at:"
 echo "  CAS:       https://${CAS_DOMAIN}"
 echo "  Warehouse: https://${WAREHOUSE_DOMAIN}"
+echo "  Frontend:  https://${FRONTEND_DOMAIN}"
 echo ""
 echo -e "${YELLOW}Watch build progress:${NC}"
 echo "  doctl apps logs $APP_ID --follow"
