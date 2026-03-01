@@ -8,6 +8,8 @@ This guide walks through setup and daily use. Once the system is running, share 
 - [Coordinator Guide](docs/coordinator.md) — reviewing and approving matches (DND Staff)
 - [Housing Subsidy Admin Guide](docs/housing-subsidy-admin.md) — recording move-in dates and managing units
 - [Shelter Agency Guide](docs/shelter-agency.md) — reviewing matches for shelter clients
+- [Warehouse Integration Guide](docs/warehouse-integration.md) — connecting your existing spreadsheet process to the HMIS Warehouse
+- [Partner Integration Guide](docs/partner-integration.md) — how data flows out to shelter agencies, housing providers, the HMIS, and funders
 
 ---
 
@@ -62,7 +64,7 @@ Programs represent the housing types you're matching people into (e.g., Permanen
 Clients are the people being matched to housing.
 
 **Option A: HMIS Warehouse connection (recommended)**
-If your CAS is connected to the HMIS Warehouse, client data flows in automatically from the community's HMIS. Assessment scores, housing history, and eligibility are kept current without manual work. Talk to your IT contact to configure this.
+If your CAS is connected to the HMIS Warehouse, client data flows in automatically from the community's HMIS. Assessment scores, housing history, and eligibility are kept current without manual work. See the [Warehouse Integration Guide](docs/warehouse-integration.md) for how to move your existing data in.
 
 **Option B: Manual import**
 Go to **Clients → Import** and upload a CSV. The system will walk you through required fields (name, date of birth, assessment score, housing history).
