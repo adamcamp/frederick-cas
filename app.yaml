@@ -5,7 +5,7 @@ services:
     repo: adamcamp/frederick-cas
     branch: develop
     deploy_on_push: true
-  build_command: bundle install --without development test && bundle exec rake assets:precompile
+  build_command: mkdir -p app/assets/stylesheets/theme/styles && touch app/assets/stylesheets/theme/styles/_variables.scss && bundle install --without development test && bundle exec rake assets:precompile
   envs:
   - key: RAILS_ENV
     value: production
