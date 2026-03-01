@@ -1,6 +1,5 @@
 # Boston Coordinated Access System [![Actions Status](https://github.com/adamcamp/frederick-cas/workflows/Audit%20and%20Test/badge.svg)](https://github.com/adamcamp/frederick-cas/actions)
 
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/adamcamp/frederick-cas/tree/develop)
 
 ## Introduction
 The Boston Coordinated Access System (CAS) project was initiated by the City of Boston's Department of Neighborhood Development office to match homeless individuals to housing vacancies based on need.
