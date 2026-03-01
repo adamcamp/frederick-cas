@@ -19,9 +19,9 @@ This guide covers deploying **both** the Coordinated Access System (CAS) and the
 
 **GitHub Account**
 - Fork these three repositories into your GitHub org:
-  - `https://github.com/greenriver/boston-cas` → `<YOUR_ORG>/boston-cas`
-  - `https://github.com/greenriver/hmis-warehouse` → `<YOUR_ORG>/hmis-warehouse`
-  - `https://github.com/greenriver/hmis-frontend` → `<YOUR_ORG>/hmis-frontend`
+  - `https://github.com/adamcamp/frederick-cas` → `<YOUR_ORG>/frederick-cas`
+  - `https://github.com/adamcamp/hmis-warehouse` → `<YOUR_ORG>/hmis-warehouse`
+  - `https://github.com/adamcamp/hmis-frontend` → `<YOUR_ORG>/hmis-frontend`
 
 **DigitalOcean Account**
 - Create account at https://digitalocean.com

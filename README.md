@@ -1,11 +1,11 @@
-# Boston Coordinated Access System [![Actions Status](https://github.com/greenriver/boston-cas/workflows/Audit%20and%20Test/badge.svg)](https://github.com/greenriver/boston-cas/actions)
+# Boston Coordinated Access System [![Actions Status](https://github.com/adamcamp/frederick-cas/workflows/Audit%20and%20Test/badge.svg)](https://github.com/adamcamp/frederick-cas/actions)
 
 ## Introduction
 The Boston Coordinated Access System (CAS) project was initiated by the City of Boston's Department of Neighborhood Development office to match homeless individuals to housing vacancies based on need.
 
 The CAS matches vacancies to permanent supportive housing units to clients using a customizable rule-based system. Once a match is proposed by the system using these rules, the system verifies eligibility and coordinates communication around the housing opportunity between the client, Department of Neighborhood Development staff, Shelter Agencies and Housing providers.
 
-See [`docs/Flow May Vouchers.pdf`](https://github.com/greenriver/boston-cas/raw/production/docs/Flow%20Map%20Vouchers.pdf) for a flow map that describes the process from voucher availability to person housed.
+See [`docs/Flow May Vouchers.pdf`](https://github.com/adamcamp/frederick-cas/raw/production/docs/Flow%20Map%20Vouchers.pdf) for a flow map that describes the process from voucher availability to person housed.
 
 ```
 Copyright © 2016 Green River Data Analysis, LLC
@@ -21,7 +21,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 ```
 
-A copy of the license is available in [LICENSE.md](https://github.com/greenriver/boston-cas/blob/production/LICENSE.md)
+A copy of the license is available in [LICENSE.md](https://github.com/adamcamp/frederick-cas/blob/production/LICENSE.md)
 
 ## Vision
 
@@ -43,9 +43,9 @@ We've developed locally on OSX using [homebrew](http://brew.sh/) and deployed to
 
 ## Screen Shots
 ##### A Match in Progress
-![Image of a match in progress](https://github.com/greenriver/boston-cas/blob/production/docs/screenshots/match-detail.png)
+![Image of a match in progress](https://github.com/adamcamp/frederick-cas/blob/production/docs/screenshots/match-detail.png)
 ##### Editing Program Roles
-![Image of a match in progress](https://github.com/greenriver/boston-cas/blob/production/docs/screenshots/rules-editing.png)
+![Image of a match in progress](https://github.com/adamcamp/frederick-cas/blob/production/docs/screenshots/rules-editing.png)
 
 ## Third-party Service Dependencies
 
