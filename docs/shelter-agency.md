@@ -2,6 +2,8 @@
 
 ← [Back to Getting Started](../GETTING_STARTED.md)
 
+If your shelter is deciding whether to join the system, see the [Emergency Shelter Guide](emergency-shelter-guide.md) first.
+
 As shelter staff, you review matches for clients at your shelter. You only see your own clients — not clients from other shelters.
 
 ---

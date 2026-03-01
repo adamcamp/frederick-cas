@@ -2,91 +2,101 @@
 
 ← [Back to Getting Started](../GETTING_STARTED.md)
 
-As an Admin, you have full access to the system. You're responsible for initial setup and ongoing system management.
+As Admin, you have full access to the system. You're responsible for the initial configuration and ongoing management.
 
 ---
 
 ## Initial Setup
 
-Do these steps once when you first launch the system.
+### 1. Create Your Two Shelter Sites as Agencies
 
-### 1. Add Your Shelters as Agencies
-
-Each participating shelter needs an agency record before you can assign staff to it.
+Your two shelters serve different populations, so set them up as separate agencies. This lets family shelter staff see only family clients, and individual shelter staff see only their clients.
 
 1. Go to **Admin → Agencies → New Agency**
-2. Enter the shelter name
-3. Repeat for each shelter in your network
+2. Create **"Family Shelter"**
+3. Create **"Individuals Shelter"**
 
-### 2. Invite Staff
+### 2. Invite Your Staff
 
-Invite everyone who will use the system. They'll receive an email to set their password.
+Go to **Admin → Users → Invite User**. Staff receive an email to set their password.
 
-**Go to Admin → Users → Invite User** and assign one of these roles:
+| Role | Who gets it | Key access |
+|------|-------------|------------|
+| **Admin** | You (and a backup) | Everything |
+| **DND Staff** | Housing coordinators | Review and approve all matches |
+| **Housing Subsidy Admin (HSA)** | Staff who record move-ins | Record housing dates, manage units |
+| **Shelter Agency** | Family shelter staff → assign to "Family Shelter" | See and act on family clients only |
+| **Shelter Agency** | Individuals shelter staff → assign to "Individuals Shelter" | See and act on individual clients only |
 
-| Role | Assign to |
-|------|-----------|
-| **Admin** | You — full access to everything |
-| **DND Staff** | Your organization's housing coordinators who approve matches |
-| **Housing Subsidy Admin (HSA)** | Staff who record move-in dates and manage housing units |
-| **Shelter Agency** | Staff at each partner shelter who review matches for their clients |
-
-Start small — one admin, one or two coordinators from your org, and one contact per shelter. You can always add more later.
-
-When inviting a **Shelter Agency** user, assign them to the correct agency so they only see their shelter's clients.
+A typical small-organization setup: 1 admin, 2 DND Staff coordinators, 1 HSA, 2–3 Shelter Agency staff per shelter.
 
 ### 3. Set Up Your Housing Programs
 
-Programs represent the housing types you're matching people into (e.g., Permanent Supportive Housing, Rapid Re-Housing).
+Programs represent the housing types you're placing clients into — not your shelters themselves. Create at least two: one for families, one for individuals.
 
+**For a family housing program:**
 1. Go to **Programs → New Program**
-2. Enter the program name and funding source
-3. Add sub-programs for each distinct location or funding stream within the program
-4. Add vouchers — each voucher is one available housing slot
+2. Enter the program name (e.g., "Family Permanent Supportive Housing") and funding source
+3. Under Requirements, add **Part of a Family = true** — this restricts the program to family households
+4. Add sub-programs for each distinct housing location or funding stream
+5. Add vouchers to each sub-program — each voucher is one available unit
 
-**Eligibility requirements** are optional but powerful. You can restrict a program to specific populations (e.g., must be chronically homeless, must be a veteran). Set these on the program and they apply to all its vouchers automatically.
+**For an individual housing program:**
+1. Same steps, but name it for individuals (e.g., "Individual Rapid Re-Housing")
+2. Do not add the family requirement — or explicitly exclude families if needed
+3. Add sub-programs and vouchers
+
+Repeat for each program type you operate (PSH, RRH, Emergency Housing Vouchers, etc.).
+
+**Eligibility requirements** let you restrict any program further — for example, requiring chronic homelessness status, veteran status, or a minimum assessment score. These are optional but useful for programs with specific funder requirements.
 
 ### 4. Get Clients into the System
 
-Clients are the people being matched to housing.
+See the [Warehouse Integration Guide](warehouse-integration.md). The short version:
 
-**Option A: HMIS Warehouse connection (recommended)**
-If your CAS is connected to the HMIS Warehouse, client data flows in automatically from the community's HMIS. Assessment scores, housing history, and eligibility are kept current without manual work. Talk to your IT contact to configure this.
+- **Quick start:** Use the [migration template](migration-template.csv) — fill it in from your intake records and import at **Clients → Import**. You can have clients in the system within hours.
+- **Long-term:** Connect to your HMIS Warehouse for automatic nightly updates. Client records, assessment scores, and enrollment history stay current without manual work.
 
-**Option B: Manual import**
-Go to **Clients → Import** and upload a CSV. The system will walk you through required fields (name, date of birth, assessment score, housing history).
-
-Once imported, review each client's availability status. Clients default to **Available**, meaning they can be matched.
+Make sure each imported client has `family_member` set correctly — this is what determines which programs they can be matched to.
 
 ---
 
 ## Ongoing Administration
 
-### Managing Users
+### Managing Staff Accounts
 
-- **Add a new user:** Admin → Users → Invite User
-- **Change a user's role:** Admin → Users → find the user → Edit
-- **Deactivate a user:** Admin → Users → find the user → Deactivate (they lose access immediately)
+- **Add a new staff member:** Admin → Users → Invite User
+- **Change a role or agency assignment:** Admin → Users → find the user → Edit
+- **Deactivate a staff member who has left:** Admin → Users → Deactivate (access ends immediately)
 
-### Managing Agencies
+When adding shelter staff, always assign them to the correct agency (Family Shelter or Individuals Shelter). Getting this wrong means they'll see the wrong clients.
 
-- **Add a new shelter:** Admin → Agencies → New Agency
-- **Edit a shelter's name or contacts:** Admin → Agencies → find the agency → Edit
+### Managing Contacts (Email Notifications)
 
-### Managing Contacts and Notifications
-
-Contacts control who receives email notifications for each program. To update:
+Contacts control who receives email notifications for each program's matches. This is separate from user accounts — a contact is a person associated with a program for notification purposes.
 
 1. Go to **Admin → Contacts**
-2. Find the contact and update their program assignments
+2. Create a contact for each staff member who should receive match emails
+3. Assign each contact to the programs they're responsible for
 
-### Adding a New Staff Member at a Shelter
+Typical setup:
+- Family shelter staff contacts → assigned to family housing programs
+- Individual shelter staff contacts → assigned to individual housing programs
+- Coordinators → assigned to all programs
 
-1. Go to **Admin → Users → Invite User**
-2. Set their role to **Shelter Agency**
-3. Assign them to the correct agency
+If someone isn't receiving match notifications, check their Contact record and program assignments — not just their user account.
 
-They'll only see clients from their own shelter.
+### Managing Housing Programs
+
+- **Add a new program:** Programs → New Program
+- **Add a voucher to an existing program:** Programs → [Program] → [Sub-program] → Add Voucher
+- **Mark a voucher unavailable** (unit under repair, etc.): Open the voucher → mark Unavailable
+- **Edit eligibility requirements:** Programs → [Program] → Requirements
+
+### System Settings
+
+- **Test email delivery:** Admin → Settings → Test Email
+- **View sent emails:** https://app.sendgrid.com/email_activity (requires SendGrid login)
 
 ---
 
@@ -94,7 +104,8 @@ They'll only see clients from their own shelter.
 
 | Report | Use it to |
 |--------|-----------|
-| **Dashboard** | See how many matches are in progress and how many vouchers are open |
-| **Parked Clients** | Review who's unavailable and why — re-activate when they're ready |
-| **Match Progress** | Spot bottlenecks (e.g., a shelter that's slow to respond) |
-| **Housed** | Track successful placements over time |
+| **Dashboard** | System-wide view — open vouchers, matches in progress, recent placements |
+| **Match Progress** | Find stuck matches and which step they're on |
+| **Housed** | Track placements over time by program |
+| **Parked Clients** | See who's unavailable, why, and when they might re-enter the pool |
+| **Agency Interactions** | Review decline and cancellation reasons by shelter site |

@@ -1,75 +1,91 @@
 # Getting Started with Frederick CAS
 
-The Frederick CAS is a tool for coordinating housing placements across Frederick's shelter system. Your organization runs the system; shelters in the community participate by reviewing matches for their clients.
+Your organization operates two emergency shelters — one for families and one for individuals — along with homeless prevention programs. The CAS manages housing matching for your shelter clients: when a housing slot opens, the system automatically identifies your highest-priority eligible client and routes the match through your staff for approval.
 
-This guide walks through setup and daily use. Once the system is running, share the role-specific guide with each group of users:
+This is an internal tool. All staff using it are part of your organization. There are no external partner agencies.
 
-- [Admin Guide](docs/admin.md) — system setup and ongoing administration
-- [Coordinator Guide](docs/coordinator.md) — reviewing and approving matches (DND Staff)
-- [Housing Subsidy Admin Guide](docs/housing-subsidy-admin.md) — recording move-in dates and managing units
-- [Shelter Agency Guide](docs/shelter-agency.md) — reviewing matches for shelter clients
-- [Warehouse Integration Guide](docs/warehouse-integration.md) — connecting your existing spreadsheet process to the HMIS Warehouse
-- [Partner Integration Guide](docs/partner-integration.md) — how data flows out to shelter agencies, housing providers, the HMIS, and funders
+Once the system is running, share the relevant guide with each group of staff:
+
+- [Admin Guide](docs/admin.md) — system setup and configuration
+- [Coordinator Guide](docs/coordinator.md) — reviewing and approving matches
+- [Housing Subsidy Admin Guide](docs/housing-subsidy-admin.md) — recording move-in dates and managing housing units
+- [Shelter Staff Guide](docs/shelter-agency.md) — confirming match availability for your shelter clients
+- [Warehouse Integration Guide](docs/warehouse-integration.md) — getting your client data into the system
+- [Partner Integration Guide](docs/partner-integration.md) — data shared with housing providers, the HMIS, and funders
+- [Prevention Programs Guide](docs/prevention-programs.md) — how your prevention work connects to the CAS
 
 ---
 
 ## How It Works
 
-When a housing slot opens up, the CAS automatically finds the highest-priority eligible client across all participating shelters, proposes the match, and routes it through an approval process. Each shelter reviews matches for their own clients. Your organization makes the final call.
+When a housing slot opens:
 
-No more spreadsheets. Every decision is logged.
+1. A coordinator marks the voucher **Available**
+2. The matching engine finds the highest-priority eligible client across both shelters
+3. The coordinator reviews and approves the proposed match
+4. The shelter staff confirm the client is ready and available
+5. The coordinator or housing admin records the move-in date when the client is housed
+
+Every step is logged. Declined matches are documented with reasons. If a match falls through, the system automatically moves to the next eligible client.
+
+**Family and individual programs are separate.** Families with children are only matched to family housing; individuals are only matched to individual housing. The system enforces this automatically based on how programs are configured.
+
+**Prevention clients are tracked separately** in your HMIS. They don't go through the CAS matching workflow unless they lose housing and enter one of your shelters — at which point they're imported into the CAS like any other shelter client.
 
 ---
 
-## Initial Setup (Admin)
+## Initial Setup
 
 Do these steps once when you first launch the system.
 
-### 1. Add Your Shelters as Agencies
+### 1. Set Up Your Two Shelter Sites
 
-Each participating shelter needs an agency record.
+Because your two shelters serve different populations, set them up as separate agencies. This keeps your family shelter staff and individual shelter staff focused on their own clients.
 
 1. Go to **Admin → Agencies → New Agency**
-2. Enter the shelter name
-3. Repeat for each shelter
+2. Create **"Family Shelter"**
+3. Create **"Individuals Shelter"**
 
-### 2. Invite Staff
+Your own organization doesn't need a separate agency record — the two shelter sites are enough.
 
-Invite everyone who will use the system. They'll receive an email to set their password.
+### 2. Invite Your Staff
 
-**Go to Admin → Users → Invite User** and assign one of these roles:
+Go to **Admin → Users → Invite User**. For a small organization, you likely need:
 
 | Role | Assign to | Guide |
 |------|-----------|-------|
-| **Admin** | You — full access to everything | [Admin Guide](docs/admin.md) |
-| **DND Staff** | Your organization's housing coordinators who approve matches | [Coordinator Guide](docs/coordinator.md) |
-| **Housing Subsidy Admin (HSA)** | Staff who record move-in dates and manage housing units | [HSA Guide](docs/housing-subsidy-admin.md) |
-| **Shelter Agency** | Staff at each partner shelter who review matches for their clients | [Shelter Agency Guide](docs/shelter-agency.md) |
+| **Admin** | Program director or system administrator | [Admin Guide](docs/admin.md) |
+| **DND Staff** | Housing coordinators who approve matches | [Coordinator Guide](docs/coordinator.md) |
+| **Housing Subsidy Admin (HSA)** | Staff who record move-in dates and manage units | [HSA Guide](docs/housing-subsidy-admin.md) |
+| **Shelter Agency** | Family shelter staff — assign to "Family Shelter" agency | [Shelter Staff Guide](docs/shelter-agency.md) |
+| **Shelter Agency** | Individuals shelter staff — assign to "Individuals Shelter" agency | [Shelter Staff Guide](docs/shelter-agency.md) |
 
-Start small. One admin, one or two coordinators from your org, and one contact per shelter.
+A small team might be 1 admin, 2 coordinators, 1 HSA, and 2–3 staff per shelter site.
 
 ### 3. Set Up Your Housing Programs
 
-Programs represent the housing types you're matching people into (e.g., Permanent Supportive Housing, Rapid Re-Housing).
+Programs are the housing types you're matching clients into — not your shelters. Examples: Permanent Supportive Housing, Rapid Re-Housing, Emergency Housing Vouchers.
+
+**For each program:**
 
 1. Go to **Programs → New Program**
 2. Enter the program name and funding source
-3. Add sub-programs for each distinct location or funding stream within the program
-4. Add vouchers — each voucher is one housing slot
+3. Set eligibility requirements (this is how you separate family and individual housing):
+   - For family programs: add the **Part of a Family** requirement
+   - For individual programs: no family requirement (or explicitly exclude families)
+4. Add sub-programs for distinct locations or funding streams within the program
+5. Add vouchers — each voucher represents one available housing slot
 
-**Eligibility requirements** are optional but powerful. You can restrict a program to specific populations (e.g., must be chronically homeless, must be a veteran). Set these on the program and they apply to all its vouchers automatically.
+**You will typically have at least two programs:** one for families, one for individuals. If you have different funding sources or housing types, create separate programs for each.
 
 ### 4. Get Clients into the System
 
-Clients are the people being matched to housing.
+See the [Warehouse Integration Guide](docs/warehouse-integration.md) for the full process. In short:
 
-**Option A: HMIS Warehouse connection (recommended)**
-If your CAS is connected to the HMIS Warehouse, client data flows in automatically from the community's HMIS. Assessment scores, housing history, and eligibility are kept current without manual work. See the [Warehouse Integration Guide](docs/warehouse-integration.md) for how to move your existing data in.
+- **If you have HMIS data:** Export HUD-standard CSV files from your HMIS, upload to the Warehouse, and clients flow in automatically. This is the recommended long-term approach.
+- **To get started quickly:** Download the [migration template](docs/migration-template.csv), fill it in from your intake records, and import it at **Clients → Import**. You can be matching within hours.
 
-**Option B: Manual import**
-Go to **Clients → Import** and upload a CSV. The system will walk you through required fields (name, date of birth, assessment score, housing history).
-
-Once imported, review each client's availability status. Clients default to **Available**, meaning they can be matched.
+When clients are imported, the system records whether they are part of a family household. This determines which programs they can be matched to.
 
 ---
 
@@ -77,58 +93,44 @@ Once imported, review each client's availability status. Clients default to **Av
 
 ### When a Slot Opens
 
-When one of your housing vouchers becomes available:
-
-1. Open the voucher in the system and mark it **Available**
-2. The matching engine automatically finds all eligible clients across all shelters
-3. Clients are ranked by priority (chronic homelessness, assessment score, time homeless)
+1. A coordinator opens the voucher and marks it **Available**
+2. The system finds all eligible clients for that program:
+   - For family programs: only clients with `family_member = true`
+   - For individual programs: only clients without family status
+3. Clients are ranked by priority: chronic homelessness first, then days homeless, then time in the system
 4. The top candidate is proposed as a match
 
 ### The Approval Workflow
 
-A typical match moves through these steps:
-
 ```
 Voucher available
       ↓
-Your coordinator reviews the proposed match → Approve or decline
+Coordinator reviews the proposed match → Approve or decline
       ↓
-The client's shelter reviews → Accept or decline
+Shelter staff confirm client is available and ready → Accept or decline
       ↓
-Your housing admin confirms → Records the housing date
+Housing admin records the move-in date
 ```
 
-Everyone gets an email when it's their turn to act. If a match is declined at any step, the reason is recorded and the next eligible client is automatically proposed.
-
-### Acting on a Match
-
-Staff see their pending actions in **Matches → My Queue**. Click into a match to:
-- View the client's information and history
-- Approve, decline (with a required reason), or defer
-- Add notes
+Everyone involved gets an email at their step. If a match is declined at any point, the reason is logged and the next eligible client is proposed automatically.
 
 ---
 
 ## Day-to-Day
 
-### Your org's coordinators
+### Coordinators
+- Check **Matches → My Queue** each morning
+- Open new vouchers when a housing unit becomes available
+- Review **Reports → Dashboard** for a system-wide view of both shelters
 
-- Check **Matches → My Queue** each morning for matches needing your review
-- Open a new voucher when a unit becomes available: **Programs → [Program] → Add Voucher → mark Available**
-- Review **Reports → Dashboard** for a system-wide snapshot
+### Shelter staff (family shelter or individuals shelter)
+- Check **Matches → My Queue** for clients awaiting your confirmation
+- If a client has left the shelter, declined housing, or isn't ready: open the client → **Availability → Park** (with a reason)
+- You only see clients from your own shelter
 
-### Shelter staff
-
-- Check **Matches → My Queue** for clients at their shelter who are in an active match
-- Update a client's status if they've left the shelter, been housed elsewhere, or aren't currently a candidate: open the client → **Availability** → **Park** (requires a reason)
-- Shelter staff only see their own clients — they cannot see clients from other shelters
-
-### Recording a successful placement
-
-When a client is housed:
-1. Open the match → **Record Housing Date**
-2. Enter the move-in date
-3. The client is removed from the active pool and recorded in the housed report
+### Housing admin
+- Check **Matches → My Queue** for clients to move in
+- Record move-in date when a client is housed: open the match → **Record Housing Date**
 
 ---
 
@@ -136,21 +138,23 @@ When a client is housed:
 
 | Report | Use it to |
 |--------|-----------|
-| **Dashboard** | See how many matches are in progress and how many vouchers are open |
-| **Parked Clients** | Review who's unavailable and why — re-activate when they're ready |
-| **Match Progress** | Spot bottlenecks (e.g., a shelter that's slow to respond) |
-| **Housed** | Track successful placements over time |
+| **Dashboard** | See active matches and open vouchers across both programs |
+| **Match Progress** | Find matches that are stuck and why |
+| **Housed** | Track successful placements by program and date |
+| **Parked Clients** | See who's unavailable and when they might be ready |
 
 ---
 
 ## Common Situations
 
-**A shelter client was housed directly (not through the CAS).** Open the client → **Mark as Housed** → enter the date. This keeps your housed numbers accurate.
+**A client moved from the individuals shelter to the family shelter (or vice versa).** Update their record to reflect the correct shelter. Their match history follows them.
 
-**A client declined housing and isn't ready to engage.** Open the client → **Availability** → **Park** → select a reason. They stay in the system but won't be matched until you reactivate them.
+**A client in your prevention program is about to lose housing.** Once they enter a shelter, import them into the CAS and they'll be eligible for matching. See the [Prevention Programs Guide](docs/prevention-programs.md).
 
-**A voucher has been sitting open for a long time.** Check whether all eligible clients are parked or already matched. You may need to revisit eligibility requirements or expand the eligible population.
+**A client was housed directly outside of the CAS.** Open the client → **Mark as Housed** → enter the date.
 
-**A shelter wants to add a new staff member.** Go to **Admin → Users → Invite User**, set their role to Shelter Agency, and assign them to the correct agency. They'll only see their shelter's clients.
+**A client declined housing and isn't ready to engage.** Open the client → **Availability → Park** → select a reason. They stay in the system but won't be matched until you reactivate them.
 
-**You need to change who gets email notifications for a program.** Go to **Admin → Contacts**, find the contact, and update their program assignments.
+**A voucher has been open for a long time.** Check whether eligible clients are parked or already in a match. You may need to revisit the program's eligibility requirements.
+
+**You need to add a new staff member.** Admin → Users → Invite User. Assign them to the correct role and, for shelter staff, to the correct agency (Family Shelter or Individuals Shelter).
