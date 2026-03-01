@@ -23,7 +23,7 @@ COPY Gemfile Gemfile.lock ./
 
 # Install Ruby gems
 RUN gem install bundler && \
-  bundle install --without development test
+  bundle install
 
 # Copy application code
 COPY . .
