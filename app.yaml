@@ -47,6 +47,24 @@ services:
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
 
+- name: web
+  github:
+    repo: adamcamp/hmis-frontend
+    branch: develop
+    deploy_on_push: true
+  dockerfile_path: Dockerfile
+  envs:
+  - key: VITE_API_URL
+    value: https://${CAS_DOMAIN}/graphql
+  - key: VITE_WAREHOUSE_URL
+    value: https://${WAREHOUSE_DOMAIN}
+  http_port: 80
+  health_check:
+    http_path: /
+  routes:
+  - path: /
+    preserve_path_prefix: true
+
 - name: warehouse
   github:
     repo: adamcamp/hmis-warehouse
@@ -181,24 +199,6 @@ databases:
   version: "8"
   production: true
   cluster_name: ${CACHE_CLUSTER_NAME}
-
-- name: web
-  github:
-    repo: adamcamp/hmis-frontend
-    branch: develop
-    deploy_on_push: true
-  dockerfile_path: Dockerfile
-  envs:
-  - key: VITE_API_URL
-    value: https://${CAS_DOMAIN}/graphql
-  - key: VITE_WAREHOUSE_URL
-    value: https://${WAREHOUSE_DOMAIN}
-  http_port: 80
-  health_check:
-    http_path: /
-  routes:
-  - path: /
-    preserve_path_prefix: true
 
 envs:
 # Shared environment variables
