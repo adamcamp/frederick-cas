@@ -16,6 +16,9 @@ services:
     scope: RUN_AND_BUILD_TIME
     value: ${RAILS_MASTER_KEY}
   - key: DATABASE_URL
+    scope: BUILD_TIME
+    value: postgresql://localhost/build_placeholder
+  - key: DATABASE_URL
     scope: RUN_TIME
     value: ${db.username}:${db.password}@${db.host}:${db.port}/frederick_cas_production
   - key: REDIS_URL
