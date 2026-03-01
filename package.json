@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "_comment": "NOTE: not all packages are managed here, many are checked into source at /vendor/assets or /app/assets/javascripts/",
   "dependencies": {
+    "billboard.js": "^3.16.0",
     "d3": "^7.6.1",
-    "billboard.js": "^3.16.0"
+    "yarn": "^1.22.22"
   },
   "repository": {
     "type": "git",
