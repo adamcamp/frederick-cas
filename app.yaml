@@ -8,6 +8,7 @@ services:
   dockerfile_path: Dockerfile
   envs:
   - key: RAILS_ENV
+    scope: RUN_TIME
     value: production
   - key: RAILS_MASTER_KEY
     scope: RUN_AND_BUILD_TIME
@@ -19,20 +20,28 @@ services:
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
+    scope: RUN_TIME
     value: ${CAS_DOMAIN}
   - key: FQDN
+    scope: RUN_TIME
     value: ${CAS_DOMAIN}
   - key: CLIENT
+    scope: RUN_TIME
     value: Frederick CAS
   - key: TIMEZONE
+    scope: RUN_TIME
     value: America/New_York
   - key: DEFAULT_FROM
+    scope: RUN_TIME
     value: '"No Reply" <no-reply@${EMAIL_DOMAIN}>'
   - key: SMTP_SERVER
+    scope: RUN_TIME
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
+    scope: RUN_TIME
     value: ${CAS_DOMAIN}
   - key: SMTP_PORT
+    scope: RUN_TIME
     value: "587"
   - key: SENDGRID_API_KEY
     scope: RUN_TIME
@@ -72,13 +81,16 @@ services:
   dockerfile_path: Dockerfile
   envs:
   - key: RAILS_ENV
+    scope: RUN_TIME
     value: production
   - key: RAILS_MASTER_KEY
     scope: RUN_AND_BUILD_TIME
     value: ${WAREHOUSE_RAILS_MASTER_KEY}
   - key: DATABASE_ADAPTER
+    scope: RUN_TIME
     value: postgresql
   - key: DATABASE_APP_DB
+    scope: RUN_TIME
     value: frederick_warehouse_production
   - key: DATABASE_HOST
     scope: RUN_TIME
@@ -93,8 +105,10 @@ services:
     scope: RUN_TIME
     value: ${db.password}
   - key: WAREHOUSE_DATABASE_ADAPTER
+    scope: RUN_TIME
     value: postgis
   - key: WAREHOUSE_DATABASE_DB
+    scope: RUN_TIME
     value: frederick_warehouse_data_production
   - key: WAREHOUSE_DATABASE_HOST
     scope: RUN_TIME
@@ -109,8 +123,10 @@ services:
     scope: RUN_TIME
     value: ${db.password}
   - key: HEALTH_DATABASE_ADAPTER
+    scope: RUN_TIME
     value: postgresql
   - key: HEALTH_DATABASE_DB
+    scope: RUN_TIME
     value: frederick_health_production
   - key: HEALTH_DATABASE_HOST
     scope: RUN_TIME
@@ -125,8 +141,10 @@ services:
     scope: RUN_TIME
     value: ${db.password}
   - key: REPORTING_DATABASE_ADAPTER
+    scope: RUN_TIME
     value: postgresql
   - key: REPORTING_DATABASE_DB
+    scope: RUN_TIME
     value: frederick_reporting_production
   - key: REPORTING_DATABASE_HOST
     scope: RUN_TIME
@@ -141,8 +159,10 @@ services:
     scope: RUN_TIME
     value: ${db.password}
   - key: CAS_DATABASE_ADAPTER
+    scope: RUN_TIME
     value: postgresql
   - key: CAS_DATABASE_DB
+    scope: RUN_TIME
     value: frederick_cas_production
   - key: CAS_DATABASE_HOST
     scope: RUN_TIME
@@ -160,20 +180,28 @@ services:
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
+    scope: RUN_TIME
     value: ${WAREHOUSE_DOMAIN}
   - key: FQDN
+    scope: RUN_TIME
     value: ${WAREHOUSE_DOMAIN}
   - key: CLIENT
+    scope: RUN_TIME
     value: Frederick HMIS Warehouse
   - key: TIMEZONE
+    scope: RUN_TIME
     value: America/New_York
   - key: DEFAULT_FROM
+    scope: RUN_TIME
     value: '"No Reply" <noreply@${EMAIL_DOMAIN}>'
   - key: SMTP_SERVER
+    scope: RUN_TIME
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
+    scope: RUN_TIME
     value: ${WAREHOUSE_DOMAIN}
   - key: SMTP_PORT
+    scope: RUN_TIME
     value: "587"
   - key: SENDGRID_API_KEY
     scope: RUN_TIME
@@ -191,6 +219,7 @@ services:
     scope: RUN_TIME
     value: ${SPACES_SECRET_ACCESS_KEY}
   - key: S3_TMP_REGION
+    scope: RUN_TIME
     value: ${SPACES_REGION}
   - key: S3_PUBLIC_BUCKET
     scope: RUN_TIME
@@ -202,8 +231,10 @@ services:
     scope: RUN_TIME
     value: ${SPACES_SECRET_ACCESS_KEY}
   - key: S3_PUBLIC_REGION
+    scope: RUN_TIME
     value: ${SPACES_REGION}
   - key: S3_PUBLIC_URL
+    scope: RUN_TIME
     value: https://${SPACES_PUBLIC_BUCKET}.${SPACES_REGION}.digitaloceanspaces.com/
   http_port: 3000
   health_check:
@@ -229,6 +260,8 @@ databases:
 envs:
 # Shared environment variables
 - key: RAILS_LOG_TO_STDOUT
+  scope: RUN_TIME
   value: "true"
 - key: MAIL_DELIVERY_METHOD
+  scope: RUN_TIME
   value: smtp
