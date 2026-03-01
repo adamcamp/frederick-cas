@@ -39,10 +39,7 @@ echo ""
 read -rp "Press Enter when you have saved both keys..."
 echo ""
 
-# Collect credentials
-read -rp "GitHub org/username (default: adamcamp): " GITHUB_ORG
-GITHUB_ORG="${GITHUB_ORG:-adamcamp}"
-
+# Collect configuration
 read -rp "CAS domain (default: frederick-cas.ondigitalocean.app): " CAS_DOMAIN
 CAS_DOMAIN="${CAS_DOMAIN:-frederick-cas.ondigitalocean.app}"
 
@@ -53,6 +50,7 @@ read -rp "Email domain for no-reply address (default: frederick-cas.org): " EMAI
 EMAIL_DOMAIN="${EMAIL_DOMAIN:-frederick-cas.org}"
 echo ""
 
+# Collect secrets (hidden)
 echo "The following inputs are hidden."
 echo ""
 
@@ -73,10 +71,9 @@ TEMP_SPEC=$(mktemp /tmp/frederick-cas-spec-XXXXXX.yaml)
 trap "rm -f $TEMP_SPEC" EXIT
 
 sed \
-  -e "s|__GITHUB_ORG__|${GITHUB_ORG}|g" \
-  -e "s|__CAS_DOMAIN__|${CAS_DOMAIN}|g" \
-  -e "s|__WAREHOUSE_DOMAIN__|${WAREHOUSE_DOMAIN}|g" \
-  -e "s|__EMAIL_DOMAIN__|${EMAIL_DOMAIN}|g" \
+  -e "s|\${CAS_DOMAIN}|${CAS_DOMAIN}|g" \
+  -e "s|\${WAREHOUSE_DOMAIN}|${WAREHOUSE_DOMAIN}|g" \
+  -e "s|\${EMAIL_DOMAIN}|${EMAIL_DOMAIN}|g" \
   -e "s|\${RAILS_MASTER_KEY}|${CAS_MASTER_KEY}|g" \
   -e "s|\${WAREHOUSE_RAILS_MASTER_KEY}|${WAREHOUSE_MASTER_KEY}|g" \
   -e "s|\${SENDGRID_API_KEY}|${SENDGRID_KEY}|g" \

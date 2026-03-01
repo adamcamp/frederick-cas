@@ -2,7 +2,7 @@ name: frederick-cas
 services:
 - name: api
   github:
-    repo: __GITHUB_ORG__/frederick-cas
+    repo: adamcamp/frederick-cas
     branch: main
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
@@ -19,19 +19,19 @@ services:
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
-    value: __CAS_DOMAIN__
+    value: ${CAS_DOMAIN}
   - key: FQDN
-    value: __CAS_DOMAIN__
+    value: ${CAS_DOMAIN}
   - key: CLIENT
     value: Frederick CAS
   - key: TIMEZONE
     value: America/New_York
   - key: DEFAULT_FROM
-    value: '"No Reply" <no-reply@__EMAIL_DOMAIN__>'
+    value: '"No Reply" <no-reply@${EMAIL_DOMAIN}>'
   - key: SMTP_SERVER
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
-    value: __CAS_DOMAIN__
+    value: ${CAS_DOMAIN}
   - key: SMTP_PORT
     value: "587"
   - key: SENDGRID_API_KEY
@@ -51,7 +51,7 @@ services:
 
 - name: warehouse
   github:
-    repo: __GITHUB_ORG__/hmis-warehouse
+    repo: adamcamp/hmis-warehouse
     branch: main
     deploy_on_push: true
   build_command: bundle install --without development test && bundle exec rake assets:precompile
@@ -145,19 +145,19 @@ services:
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
-    value: __WAREHOUSE_DOMAIN__
+    value: ${WAREHOUSE_DOMAIN}
   - key: FQDN
-    value: __WAREHOUSE_DOMAIN__
+    value: ${WAREHOUSE_DOMAIN}
   - key: CLIENT
     value: Frederick HMIS Warehouse
   - key: TIMEZONE
     value: America/New_York
   - key: DEFAULT_FROM
-    value: '"No Reply" <noreply@__EMAIL_DOMAIN__>'
+    value: '"No Reply" <noreply@${EMAIL_DOMAIN}>'
   - key: SMTP_SERVER
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
-    value: __WAREHOUSE_DOMAIN__
+    value: ${WAREHOUSE_DOMAIN}
   - key: SMTP_PORT
     value: "587"
   - key: SENDGRID_API_KEY
@@ -177,15 +177,15 @@ services:
 
 - name: web
   github:
-    repo: __GITHUB_ORG__/hmis-frontend
+    repo: adamcamp/hmis-frontend
     branch: main
     deploy_on_push: true
   build_command: yarn install && yarn build
   envs:
   - key: VITE_API_URL
-    value: https://__CAS_DOMAIN__/graphql
+    value: https://${CAS_DOMAIN}/graphql
   - key: VITE_WAREHOUSE_URL
-    value: https://__WAREHOUSE_DOMAIN__
+    value: https://${WAREHOUSE_DOMAIN}
   source_dir: dist
   http_port: 8080
   health_check:
