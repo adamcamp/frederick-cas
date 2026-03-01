@@ -56,23 +56,6 @@ services:
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
 
-- name: web
-  github:
-    repo: adamcamp/hmis-frontend
-    branch: develop
-    deploy_on_push: true
-  dockerfile_path: Dockerfile
-  envs:
-  - key: VITE_APP_URL
-    value: https://${FRONTEND_DOMAIN}
-  - key: VITE_API_URL
-    value: https://${CAS_DOMAIN}/graphql
-  - key: VITE_WAREHOUSE_URL
-    value: https://${WAREHOUSE_DOMAIN}
-  http_port: 80
-  health_check:
-    http_path: /
-
 - name: warehouse
   github:
     repo: adamcamp/hmis-warehouse
@@ -245,6 +228,22 @@ services:
   run_command: |
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
+
+static_sites:
+- name: web
+  github:
+    repo: adamcamp/hmis-frontend
+    branch: develop
+    deploy_on_push: true
+  build_command: HUSKY=0 yarn install --frozen-lockfile && yarn build
+  output_dir: dist
+  envs:
+  - key: VITE_APP_URL
+    value: https://${FRONTEND_DOMAIN}
+  - key: VITE_API_URL
+    value: https://${CAS_DOMAIN}/graphql
+  - key: VITE_WAREHOUSE_URL
+    value: https://${WAREHOUSE_DOMAIN}
 
 databases:
 - name: db
