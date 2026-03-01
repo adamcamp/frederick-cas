@@ -2,7 +2,12 @@
 
 The Frederick CAS is a tool for coordinating housing placements across Frederick's shelter system. Your organization runs the system; shelters in the community participate by reviewing matches for their clients.
 
-This guide walks through setup and daily use.
+This guide walks through setup and daily use. Once the system is running, share the role-specific guide with each group of users:
+
+- [Admin Guide](docs/admin.md) — system setup and ongoing administration
+- [Coordinator Guide](docs/coordinator.md) — reviewing and approving matches (DND Staff)
+- [Housing Subsidy Admin Guide](docs/housing-subsidy-admin.md) — recording move-in dates and managing units
+- [Shelter Agency Guide](docs/shelter-agency.md) — reviewing matches for shelter clients
 
 ---
 
@@ -32,12 +37,12 @@ Invite everyone who will use the system. They'll receive an email to set their p
 
 **Go to Admin → Users → Invite User** and assign one of these roles:
 
-| Role | Assign to |
-|------|-----------|
-| **Admin** | You — full access to everything |
-| **DND Staff** | Your organization's housing coordinators who approve matches |
-| **Housing Subsidy Admin (HSA)** | Staff who record move-in dates and manage housing units |
-| **Shelter Agency** | Staff at each partner shelter who review matches for their clients |
+| Role | Assign to | Guide |
+|------|-----------|-------|
+| **Admin** | You — full access to everything | [Admin Guide](docs/admin.md) |
+| **DND Staff** | Your organization's housing coordinators who approve matches | [Coordinator Guide](docs/coordinator.md) |
+| **Housing Subsidy Admin (HSA)** | Staff who record move-in dates and manage housing units | [HSA Guide](docs/housing-subsidy-admin.md) |
+| **Shelter Agency** | Staff at each partner shelter who review matches for their clients | [Shelter Agency Guide](docs/shelter-agency.md) |
 
 Start small. One admin, one or two coordinators from your org, and one contact per shelter.
 
