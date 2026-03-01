@@ -5,19 +5,13 @@ services:
     repo: adamcamp/frederick-cas
     branch: develop
     deploy_on_push: true
-  build_command: bundle install && yarn install --production &&  bundle exec rake assets:precompile
+  dockerfile_path: Dockerfile
   envs:
   - key: RAILS_ENV
     value: production
-  - key: EXECJS_RUNTIME
-    scope: BUILD_TIME
-    value: MiniRacer
   - key: RAILS_MASTER_KEY
     scope: RUN_AND_BUILD_TIME
     value: ${RAILS_MASTER_KEY}
-  - key: DATABASE_URL
-    scope: BUILD_TIME
-    value: postgresql://localhost/build_placeholder
   - key: DATABASE_URL
     scope: RUN_TIME
     value: ${db.username}:${db.password}@${db.host}:${db.port}/frederick_cas_production
@@ -75,7 +69,7 @@ services:
     repo: adamcamp/hmis-warehouse
     branch: develop
     deploy_on_push: true
-  build_command: apt-get update -qq && apt-get install -y --no-install-recommends freetds-dev libproj-dev && bundle install --without development test && yarn install --production && bundle exec rake assets:precompile
+  dockerfile_path: Dockerfile
   envs:
   - key: RAILS_ENV
     value: production
