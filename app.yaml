@@ -15,7 +15,7 @@ services:
     value: ${RAILS_MASTER_KEY}
   - key: DATABASE_URL
     scope: RUN_TIME
-    value: ${db.username}:${db.password}@${db.host}:${db.port}/frederick_cas_production
+    value: postgresql://${db.username}:${db.password}@${db.host}:${db.port}/frederick_cas_production
   - key: REDIS_URL
     scope: RUN_TIME
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
