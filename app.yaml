@@ -1,4 +1,8 @@
 name: frederick-cas
+domains:
+- domain: ${DOMAIN}
+  type: PRIMARY
+
 services:
 - name: api
   github:
@@ -21,10 +25,10 @@ services:
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
     scope: RUN_TIME
-    value: ${CAS_DOMAIN}
+    value: ${DOMAIN}
   - key: FQDN
     scope: RUN_TIME
-    value: ${CAS_DOMAIN}
+    value: ${DOMAIN}
   - key: CLIENT
     scope: RUN_TIME
     value: Frederick CAS
@@ -39,7 +43,7 @@ services:
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
     scope: RUN_TIME
-    value: ${CAS_DOMAIN}
+    value: ${DOMAIN}
   - key: SMTP_PORT
     scope: RUN_TIME
     value: "587"
@@ -50,8 +54,8 @@ services:
   health_check:
     http_path: /health
   routes:
-  - path: /
-    preserve_path_prefix: true
+  - path: /api
+    preserve_path_prefix: false
   run_command: |
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
@@ -164,10 +168,10 @@ services:
     value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
   - key: HOSTNAME
     scope: RUN_TIME
-    value: ${WAREHOUSE_DOMAIN}
+    value: ${DOMAIN}
   - key: FQDN
     scope: RUN_TIME
-    value: ${WAREHOUSE_DOMAIN}
+    value: ${DOMAIN}
   - key: CLIENT
     scope: RUN_TIME
     value: Frederick HMIS Warehouse
@@ -182,7 +186,7 @@ services:
     value: smtp.sendgrid.net
   - key: SMTP_DOMAIN
     scope: RUN_TIME
-    value: ${WAREHOUSE_DOMAIN}
+    value: ${DOMAIN}
   - key: SMTP_PORT
     scope: RUN_TIME
     value: "587"
@@ -239,11 +243,11 @@ static_sites:
   output_dir: dist
   envs:
   - key: VITE_APP_URL
-    value: https://${FRONTEND_DOMAIN}
+    value: https://${DOMAIN}
   - key: VITE_API_URL
-    value: https://${CAS_DOMAIN}/graphql
+    value: https://${DOMAIN}/api/graphql
   - key: VITE_WAREHOUSE_URL
-    value: https://${WAREHOUSE_DOMAIN}
+    value: https://${DOMAIN}/warehouse
 
 databases:
 - name: db
@@ -258,6 +262,12 @@ databases:
 
 envs:
 # Shared environment variables
+- key: DOMAIN
+  scope: RUN_TIME
+  value: frederick-cas.adamsworlds.com
+- key: EMAIL_DOMAIN
+  scope: RUN_TIME
+  value: adamsworlds.com
 - key: RAILS_LOG_TO_STDOUT
   scope: RUN_TIME
   value: "true"
