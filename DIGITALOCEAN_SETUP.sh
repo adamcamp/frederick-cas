@@ -64,10 +64,10 @@ echo ""
 read -rp "DigitalOcean Spaces region (e.g. nyc3, sfo3): " SPACES_REGION
 SPACES_REGION="${SPACES_REGION:-nyc3}"
 
-read -rp "Spaces bucket for temporary uploads (e.g. frederick-warehouse-tmp): " SPACES_TMP_BUCKET
+read -rp "Spaces bucket for temporary uploads (default: frederick-warehouse-tmp): " SPACES_TMP_BUCKET
 SPACES_TMP_BUCKET="${SPACES_TMP_BUCKET:-frederick-warehouse-tmp}"
 
-read -rp "Spaces bucket for public reports (e.g. frederick-warehouse-public): " SPACES_PUBLIC_BUCKET
+read -rp "Spaces bucket for public reports (default: frederick-warehouse-public): " SPACES_PUBLIC_BUCKET
 SPACES_PUBLIC_BUCKET="${SPACES_PUBLIC_BUCKET:-frederick-warehouse-public}"
 
 read -rsp "Spaces Access Key ID: " SPACES_ACCESS_KEY_ID
