@@ -22,7 +22,7 @@ services:
     value: require
   - key: DATABASE_MAINTENANCE_DB
     scope: RUN_TIME
-    value: ${db.DATABASE}
+    value: db
   - key: DATABASE_URL
     scope: RUN_TIME
     value: postgresql://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_cas_production
@@ -84,7 +84,7 @@ services:
     value: require
   - key: DATABASE_MAINTENANCE_DB
     scope: RUN_TIME
-    value: ${db.DATABASE}
+    value: db
   - key: DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
