@@ -30,14 +30,14 @@ if [[ ! -f "$SCRIPT_DIR/app.yaml" ]]; then
   exit 1
 fi
 
-# Generate Rails master keys
-CAS_MASTER_KEY=$(openssl rand -hex 16)
-WAREHOUSE_MASTER_KEY=$(openssl rand -hex 16)
+# Generate secret key bases (128-char hex, matching Rails convention)
+CAS_SECRET_KEY_BASE=$(openssl rand -hex 64)
+WAREHOUSE_SECRET_KEY_BASE=$(openssl rand -hex 64)
 
-echo -e "${YELLOW}Generated Rails master keys — save these somewhere safe:${NC}"
+echo -e "${YELLOW}Generated Rails secret key bases — save these somewhere safe:${NC}"
 echo ""
-echo "  CAS master key:       $CAS_MASTER_KEY"
-echo "  Warehouse master key: $WAREHOUSE_MASTER_KEY"
+echo "  CAS SECRET_KEY_BASE:       $CAS_SECRET_KEY_BASE"
+echo "  Warehouse SECRET_KEY_BASE: $WAREHOUSE_SECRET_KEY_BASE"
 echo ""
 echo -e "${RED}You will not see these again. Copy them now before continuing.${NC}"
 echo ""
@@ -107,8 +107,8 @@ trap "rm -f $TEMP_SPEC" EXIT
 sed \
   -e "s|\${DOMAIN}|${DOMAIN}|g" \
   -e "s|\${EMAIL_DOMAIN}|${EMAIL_DOMAIN}|g" \
-  -e "s|\${RAILS_MASTER_KEY}|${CAS_MASTER_KEY}|g" \
-  -e "s|\${WAREHOUSE_RAILS_MASTER_KEY}|${WAREHOUSE_MASTER_KEY}|g" \
+  -e "s|\${SECRET_KEY_BASE}|${CAS_SECRET_KEY_BASE}|g" \
+  -e "s|\${WAREHOUSE_SECRET_KEY_BASE}|${WAREHOUSE_SECRET_KEY_BASE}|g" \
   -e "s|\${SENDGRID_API_KEY}|${SENDGRID_KEY}|g" \
   -e "s|\${CACHE_CLUSTER_NAME}|${CACHE_CLUSTER_NAME}|g" \
   -e "s|\${SPACES_REGION}|${SPACES_REGION}|g" \
