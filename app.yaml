@@ -19,10 +19,10 @@ services:
     value: ${RAILS_MASTER_KEY}
   - key: DATABASE_URL
     scope: RUN_TIME
-    value: postgresql://${db.username}:${db.password}@${db.host}:${db.port}/frederick_cas_production
+    value: postgresql://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_cas_production
   - key: REDIS_URL
     scope: RUN_TIME
-    value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
+    value: redis://${cache.USERNAME}:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
   - key: HOSTNAME
     scope: RUN_TIME
     value: ${DOMAIN}
@@ -81,16 +81,16 @@ services:
     value: frederick_warehouse_production
   - key: DATABASE_HOST
     scope: RUN_TIME
-    value: ${db.host}
+    value: ${db.HOSTNAME}
   - key: DATABASE_PORT
     scope: RUN_TIME
-    value: ${db.port}
+    value: ${db.PORT}
   - key: DATABASE_USER
     scope: RUN_TIME
-    value: ${db.username}
+    value: ${db.USERNAME}
   - key: DATABASE_PASS
     scope: RUN_TIME
-    value: ${db.password}
+    value: ${db.PASSWORD}
   - key: WAREHOUSE_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgis
@@ -99,16 +99,16 @@ services:
     value: frederick_warehouse_data_production
   - key: WAREHOUSE_DATABASE_HOST
     scope: RUN_TIME
-    value: ${db.host}
+    value: ${db.HOSTNAME}
   - key: WAREHOUSE_DATABASE_PORT
     scope: RUN_TIME
-    value: ${db.port}
+    value: ${db.PORT}
   - key: WAREHOUSE_DATABASE_USER
     scope: RUN_TIME
-    value: ${db.username}
+    value: ${db.USERNAME}
   - key: WAREHOUSE_DATABASE_PASS
     scope: RUN_TIME
-    value: ${db.password}
+    value: ${db.PASSWORD}
   - key: HEALTH_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
@@ -117,16 +117,16 @@ services:
     value: frederick_health_production
   - key: HEALTH_DATABASE_HOST
     scope: RUN_TIME
-    value: ${db.host}
+    value: ${db.HOSTNAME}
   - key: HEALTH_DATABASE_PORT
     scope: RUN_TIME
-    value: ${db.port}
+    value: ${db.PORT}
   - key: HEALTH_DATABASE_USER
     scope: RUN_TIME
-    value: ${db.username}
+    value: ${db.USERNAME}
   - key: HEALTH_DATABASE_PASS
     scope: RUN_TIME
-    value: ${db.password}
+    value: ${db.PASSWORD}
   - key: REPORTING_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
@@ -135,16 +135,16 @@ services:
     value: frederick_reporting_production
   - key: REPORTING_DATABASE_HOST
     scope: RUN_TIME
-    value: ${db.host}
+    value: ${db.HOSTNAME}
   - key: REPORTING_DATABASE_PORT
     scope: RUN_TIME
-    value: ${db.port}
+    value: ${db.PORT}
   - key: REPORTING_DATABASE_USER
     scope: RUN_TIME
-    value: ${db.username}
+    value: ${db.USERNAME}
   - key: REPORTING_DATABASE_PASS
     scope: RUN_TIME
-    value: ${db.password}
+    value: ${db.PASSWORD}
   - key: CAS_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
@@ -153,19 +153,19 @@ services:
     value: frederick_cas_production
   - key: CAS_DATABASE_HOST
     scope: RUN_TIME
-    value: ${db.host}
+    value: ${db.HOSTNAME}
   - key: CAS_DATABASE_PORT
     scope: RUN_TIME
-    value: ${db.port}
+    value: ${db.PORT}
   - key: CAS_DATABASE_USER
     scope: RUN_TIME
-    value: ${db.username}
+    value: ${db.USERNAME}
   - key: CAS_DATABASE_PASS
     scope: RUN_TIME
-    value: ${db.password}
+    value: ${db.PASSWORD}
   - key: REDIS_URL
     scope: RUN_TIME
-    value: redis://${cache.username}:${cache.password}@${cache.host}:${cache.port}
+    value: redis://${cache.USERNAME}:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
   - key: HOSTNAME
     scope: RUN_TIME
     value: ${DOMAIN}
