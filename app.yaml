@@ -57,7 +57,6 @@ services:
   - path: /api
     preserve_path_prefix: false
   run_command: |
-    printf "production:\n  secret_key_base: %s\n" "$SECRET_KEY_BASE" > config/secrets.yml
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
 
@@ -231,7 +230,6 @@ services:
   - path: /warehouse
     preserve_path_prefix: true
   run_command: |
-    printf "production:\n  secret_key_base: %s\n" "$SECRET_KEY_BASE" > config/secrets.yml
     bundle exec rake db:migrate
     exec bundle exec puma -c config/puma.rb
 

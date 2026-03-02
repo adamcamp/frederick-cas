@@ -70,6 +70,8 @@ module FrederickCa
       def secrets
         config.secrets
       end
+    elsif ENV['SECRET_KEY_BASE'].present?
+      config.secret_key_base = ENV['SECRET_KEY_BASE']
     end
 
     # FIXME Suppress the Rails 5 belongs_to requirement
