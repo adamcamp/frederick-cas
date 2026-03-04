@@ -28,7 +28,7 @@ services:
     value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/${db.DATABASE}
   - key: REDIS_URL
     scope: RUN_TIME
-    value: redis://${cache.USERNAME}:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
+    value: rediss://:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
   - key: HOSTNAME
     scope: RUN_TIME
     value: ${DOMAIN}
@@ -64,7 +64,7 @@ services:
     preserve_path_prefix: false
   run_command: |
     bundle exec rake db:create db:migrate
-    exec bundle exec puma -c config/puma.rb
+    bundle exec puma -c config/puma.rb
 
 - name: warehouse
   github:
@@ -117,7 +117,7 @@ services:
     value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_cas_production
   - key: REDIS_URL
     scope: RUN_TIME
-    value: redis://${cache.USERNAME}:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
+    value: rediss://:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
   - key: HOSTNAME
     scope: RUN_TIME
     value: ${DOMAIN}
@@ -183,7 +183,7 @@ services:
     preserve_path_prefix: true
   run_command: |
     bundle exec rake db:create db:migrate
-    exec bundle exec puma -c config/puma.rb
+    bundle exec puma -c config/puma.rb
 
 static_sites:
 - name: web
@@ -204,7 +204,6 @@ static_sites:
 databases:
 - name: db
   engine: PG
-  version: "14"
   db_name: postgres
   production: true
   cluster_name: ${DB_CLUSTER_NAME}
