@@ -266,8 +266,8 @@ databases:
   engine: PG
   version: "14"
   db_name: postgres
-  
-
+  production: true
+  cluster_name: postgres-cluster
 - name: cache
   engine: VALKEY
   version: "8"
