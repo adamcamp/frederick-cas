@@ -17,6 +17,9 @@ services:
   - key: SECRET_KEY_BASE
     scope: RUN_TIME
     value: ${SECRET_KEY_BASE}
+  - key: DATABASE_ADAPTER
+    scope: RUN_TIME
+    value: postgresql
   - key: DATABASE_SSLMODE
     scope: RUN_TIME
     value: require
