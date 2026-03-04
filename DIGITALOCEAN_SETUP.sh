@@ -51,6 +51,8 @@ DOMAIN="${DOMAIN:-frederick-cas.adamsworlds.com}"
 read -rp "Email domain for no-reply address (default: adamsworlds.com): " EMAIL_DOMAIN
 EMAIL_DOMAIN="${EMAIL_DOMAIN:-adamsworlds.com}"
 
+read -rp "PostgreSQL cluster name (existing managed DB cluster in DigitalOcean): " DB_CLUSTER_NAME
+
 # Collect secrets (hidden)
 echo "The following inputs are hidden."
 echo ""
@@ -110,6 +112,7 @@ sed \
   -e "s|\${SECRET_KEY_BASE}|${CAS_SECRET_KEY_BASE}|g" \
   -e "s|\${WAREHOUSE_SECRET_KEY_BASE}|${WAREHOUSE_SECRET_KEY_BASE}|g" \
   -e "s|\${SENDGRID_API_KEY}|${SENDGRID_KEY}|g" \
+  -e "s|\${DB_CLUSTER_NAME}|${DB_CLUSTER_NAME}|g" \
   -e "s|\${CACHE_CLUSTER_NAME}|${CACHE_CLUSTER_NAME}|g" \
   -e "s|\${SPACES_REGION}|${SPACES_REGION}|g" \
   -e "s|\${SPACES_TMP_BUCKET}|${SPACES_TMP_BUCKET}|g" \

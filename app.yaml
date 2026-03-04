@@ -88,93 +88,33 @@ services:
   - key: DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
-  - key: DATABASE_APP_DB
+  - key: DATABASE_URL
     scope: RUN_TIME
-    value: frederick_warehouse_production
-  - key: DATABASE_HOST
-    scope: RUN_TIME
-    value: ${db.HOSTNAME}
-  - key: DATABASE_PORT
-    scope: RUN_TIME
-    value: ${db.PORT}
-  - key: DATABASE_USER
-    scope: RUN_TIME
-    value: ${db.USERNAME}
-  - key: DATABASE_PASS
-    scope: RUN_TIME
-    value: ${db.PASSWORD}
+    value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_warehouse_production
   - key: WAREHOUSE_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgis
-  - key: WAREHOUSE_DATABASE_DB
+  - key: WAREHOUSE_DATABASE_URL
     scope: RUN_TIME
-    value: frederick_warehouse_data_production
-  - key: WAREHOUSE_DATABASE_HOST
-    scope: RUN_TIME
-    value: ${db.HOSTNAME}
-  - key: WAREHOUSE_DATABASE_PORT
-    scope: RUN_TIME
-    value: ${db.PORT}
-  - key: WAREHOUSE_DATABASE_USER
-    scope: RUN_TIME
-    value: ${db.USERNAME}
-  - key: WAREHOUSE_DATABASE_PASS
-    scope: RUN_TIME
-    value: ${db.PASSWORD}
+    value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_warehouse_data_production
   - key: HEALTH_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
-  - key: HEALTH_DATABASE_DB
+  - key: HEALTH_DATABASE_URL
     scope: RUN_TIME
-    value: frederick_health_production
-  - key: HEALTH_DATABASE_HOST
-    scope: RUN_TIME
-    value: ${db.HOSTNAME}
-  - key: HEALTH_DATABASE_PORT
-    scope: RUN_TIME
-    value: ${db.PORT}
-  - key: HEALTH_DATABASE_USER
-    scope: RUN_TIME
-    value: ${db.USERNAME}
-  - key: HEALTH_DATABASE_PASS
-    scope: RUN_TIME
-    value: ${db.PASSWORD}
+    value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_health_production
   - key: REPORTING_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
-  - key: REPORTING_DATABASE_DB
+  - key: REPORTING_DATABASE_URL
     scope: RUN_TIME
-    value: frederick_reporting_production
-  - key: REPORTING_DATABASE_HOST
-    scope: RUN_TIME
-    value: ${db.HOSTNAME}
-  - key: REPORTING_DATABASE_PORT
-    scope: RUN_TIME
-    value: ${db.PORT}
-  - key: REPORTING_DATABASE_USER
-    scope: RUN_TIME
-    value: ${db.USERNAME}
-  - key: REPORTING_DATABASE_PASS
-    scope: RUN_TIME
-    value: ${db.PASSWORD}
+    value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_reporting_production
   - key: CAS_DATABASE_ADAPTER
     scope: RUN_TIME
     value: postgresql
-  - key: CAS_DATABASE_DB
+  - key: CAS_DATABASE_URL
     scope: RUN_TIME
-    value: frederick_cas_production
-  - key: CAS_DATABASE_HOST
-    scope: RUN_TIME
-    value: ${db.HOSTNAME}
-  - key: CAS_DATABASE_PORT
-    scope: RUN_TIME
-    value: ${db.PORT}
-  - key: CAS_DATABASE_USER
-    scope: RUN_TIME
-    value: ${db.USERNAME}
-  - key: CAS_DATABASE_PASS
-    scope: RUN_TIME
-    value: ${db.PASSWORD}
+    value: postgres://${db.USERNAME}:${db.PASSWORD}@${db.HOSTNAME}:${db.PORT}/frederick_cas_production
   - key: REDIS_URL
     scope: RUN_TIME
     value: redis://${cache.USERNAME}:${cache.PASSWORD}@${cache.HOSTNAME}:${cache.PORT}
@@ -267,7 +207,7 @@ databases:
   version: "14"
   db_name: postgres
   production: true
-  cluster_name: postgres-cluster
+  cluster_name: ${DB_CLUSTER_NAME}
 - name: cache
   engine: VALKEY
   version: "8"
