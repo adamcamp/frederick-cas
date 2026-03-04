@@ -3,7 +3,7 @@ default: &default
   host: <%= ENV['DATABASE_HOST'] %>
   pool: 5
   timeout: 5000
-  maintenance_database: 'db'
+  maintenance_database: <%= ENV.fetch('DATABASE_MAINTENANCE_DB') { 'postgres' } %>
   <% if ENV['DATABASE_PORT'] %>
   port: <%= ENV['DATABASE_PORT'] %>
   <% end %>
