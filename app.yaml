@@ -63,7 +63,7 @@ services:
   - path: /api
     preserve_path_prefix: false
   run_command: |
-    bundle exec rake db:create db:migrate
+    bundle exec rake db:migrate
     bundle exec puma -c config/puma.rb
 
 - name: warehouse
